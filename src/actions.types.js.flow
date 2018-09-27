@@ -132,7 +132,7 @@ export type ChangeMultiple = {
     data: any,
     touch?: boolean,
     persistentSubmitErrors?: boolean
-  ): ChangeAction
+  ): ChangeMultipleAction
 }
 export type ClearSubmitAction = {
   type: string,

@@ -32,7 +32,8 @@ import {
   UNTOUCH,
   UPDATE_SYNC_ERRORS,
   UPDATE_SYNC_WARNINGS,
-  CLEAR_ASYNC_ERROR
+  CLEAR_ASYNC_ERROR,
+  CHANGE_MULTIPLE
 } from '../actionTypes'
 import actions from '../actions'
 import { isFSA } from 'flux-standard-action'
@@ -50,6 +51,7 @@ const {
   arrayUnshift,
   blur,
   change,
+  changeMultiple,
   clearSubmit,
   clearSubmitErrors,
   clearFields,
@@ -351,6 +353,42 @@ describe('actions', () => {
     })
 
     expect(isFSA(change('myForm', 'myField', 7, true, false))).toBe(true)
+  })
+
+  it('should create change multiple action', () => {
+    expect(change('myForm', { myField: 'test' }, false, true)).toEqual({
+      type: CHANGE_MULTIPLE,
+
+      meta: {
+        form: 'myForm',
+        touch: false,
+        persistentSubmitErrors: true
+      },
+
+      payload: { myField: 'test' }
+    })
+
+    expect(isFSA(change('myForm', { myField: 'test' }, false, true))).toBe(true)
+
+    expect(
+      change('myForm', { myField: 7, testField: 'f8', t: null }, true, false)
+    ).toEqual({
+      type: CHANGE_MULTIPLE,
+
+      meta: {
+        form: 'myForm',
+        touch: true,
+        persistentSubmitErrors: false
+      },
+
+      payload: { myField: 7, testField: 'f8', t: null }
+    })
+
+    expect(
+      isFSA(
+        change('myForm', { myField: 7, testField: 'f8', t: null }, true, false)
+      )
+    ).toBe(true)
   })
 
   it('should create focus action', () => {

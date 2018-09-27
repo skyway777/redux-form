@@ -115,7 +115,7 @@ type InitializeAction = (
 ) => void
 type FocusAction = (field: string) => void
 type ChangeAction = (field: string, value: any) => void
-type ChangeMultiple = (newValues: Values) => void
+type ChangeMultipleAction = (newValues: Values) => void
 type BlurAction = (field: string, value: any) => void
 type ArrayUnshiftAction = (field: string, value: any) => void
 type ArrayShiftAction = (field: string) => void

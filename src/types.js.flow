@@ -86,7 +86,7 @@ export type Context = {
   registerInnerOnSubmit: (innerOnSubmit: Function) => void,
   focus: (name: string) => void,
   change: (name: string, value: any) => void,
-  changeMultiple: (values: object) => void;
+  changeMultiple: (values: Object) => void;
   blur: (name: string, value: any) => void
 }
 
@@ -118,7 +118,7 @@ export type FormProps = {
   autofill: (field: string, value: any) => void,
   blur: (field: string, value: any) => void,
   change: (field: string, value: any) => void,
-  changeMultiple: (values: object) => void,
+  changeMultiple: (values: Object) => void,
   clearAsyncError: (field: string) => void,
   clearSubmit: () => void,
   destroy: () => void,
