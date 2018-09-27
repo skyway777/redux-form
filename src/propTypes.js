@@ -37,6 +37,7 @@ export const formPropTypes = {
   autofill: func.isRequired, // action to set a value of a field and mark it as autofilled
   blur: func.isRequired, // action to mark a field as blurred
   change: func.isRequired, // action to change the value of a field
+  changeMultiple: func.isRequired, // action to change multiple field values
   clearAsyncError: func.isRequired, // action to clear the async error of a field
   clearFields: func.isRequired, // action to clean fields values for all fields
   clearSubmitErrors: func.isRequired, // action to remove submitErrors and error

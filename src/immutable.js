@@ -63,6 +63,7 @@ export const arrayUnshift = actions.arrayUnshift
 export const autofill = actions.autofill
 export const blur = actions.blur
 export const change = actions.change
+export const changeMultiple = actions.changeMultiple
 export const clearSubmitErrors = actions.clearSubmitErrors
 export const clearFields = actions.clearFields
 export const destroy = actions.destroy

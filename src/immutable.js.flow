@@ -55,6 +55,7 @@ import type {
   AutofillAction,
   BlurAction,
   ChangeAction,
+  ChangeMultipleAction,
   ClearSubmitErrorsAction,
   DestroyAction,
   FocusAction,
@@ -245,6 +246,7 @@ declare export var arrayUnshift: ArrayUnshiftAction
 declare export var autofill: AutofillAction
 declare export var blur: BlurAction
 declare export var change: ChangeAction
+declare export var changeMultiple: ChangeMultipleAction
 declare export var clearSubmitErrors: ClearSubmitErrorsAction
 declare export var destroy: DestroyAction
 declare export var focus: FocusAction

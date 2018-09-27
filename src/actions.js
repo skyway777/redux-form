@@ -13,6 +13,7 @@ import {
   AUTOFILL,
   BLUR,
   CHANGE,
+  CHANGE_MULTIPLE,
   CLEAR_SUBMIT,
   CLEAR_SUBMIT_ERRORS,
   CLEAR_ASYNC_ERROR,
@@ -64,6 +65,8 @@ import type {
   Blur,
   ChangeAction,
   Change,
+  ChangeMultipleAction,
+  ChangeMultiple,
   ClearSubmitAction,
   ClearSubmit,
   ClearSubmitErrorsAction,
@@ -244,6 +247,17 @@ const change: Change = (
   type: CHANGE,
   meta: { form, field, touch, persistentSubmitErrors },
   payload: value
+})
+
+const changeMultiple: ChangeMultiple = (
+  form: string,
+  data: any,
+  touch?: boolean,
+  persistentSubmitErrors?: boolean
+): ChangeMultipleAction => ({
+  type: CHANGE_MULTIPLE,
+  meta: { form, touch, persistentSubmitErrors },
+  payload: data
 })
 
 const clearSubmit: ClearSubmit = (form: string): ClearSubmitAction => ({
@@ -439,6 +453,7 @@ const actions = {
   autofill,
   blur,
   change,
+  changeMultiple,
   clearFields,
   clearSubmit,
   clearSubmitErrors,

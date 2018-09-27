@@ -55,6 +55,7 @@ import type {
   Autofill,
   Blur,
   Change,
+  ChangeMultiple,
   ClearSubmitErrors,
   ClearFields,
   Destroy,
@@ -244,6 +245,7 @@ declare export var arrayUnshift: ArrayUnshift
 declare export var autofill: Autofill
 declare export var blur: Blur
 declare export var change: Change
+declare export var changeMultiple: ChangeMultiple
 declare export var clearSubmitErrors: ClearSubmitErrors
 declare export var clearFields: ClearFields
 declare export var destroy: Destroy

@@ -59,6 +59,7 @@ const {
   arrayUnshift,
   blur,
   change,
+  changeMultiple,
   focus,
   ...formActions
 } = importedActions
@@ -114,6 +115,7 @@ type InitializeAction = (
 ) => void
 type FocusAction = (field: string) => void
 type ChangeAction = (field: string, value: any) => void
+type ChangeMultiple = (newValues: Values) => void
 type BlurAction = (field: string, value: any) => void
 type ArrayUnshiftAction = (field: string, value: any) => void
 type ArrayShiftAction = (field: string) => void
@@ -215,6 +217,7 @@ export type Props = {
   asyncValidating: boolean,
   blur: BlurAction,
   change: ChangeAction,
+  changeMultiple: ChangeMultipleAction,
   children?: React.Node,
   clearSubmit: ClearSubmitAction,
   destroy: DestroyAction,
@@ -786,7 +789,13 @@ const createReduxForm = (structure: Structure<*, *>) => {
         }
 
         submit = (submitOrEvent: any): any => {
-          const { onSubmit, blur, change, dispatch } = this.props
+          const {
+            onSubmit,
+            blur,
+            change,
+            changeMultiple,
+            dispatch
+          } = this.props
 
           if (!submitOrEvent || silenceEvent(submitOrEvent)) {
             // submitOrEvent is an event: fire submit if not already submitting
@@ -801,7 +810,10 @@ const createReduxForm = (structure: Structure<*, *>) => {
                     checkSubmit(onSubmit),
                     {
                       ...this.props,
-                      ...bindActionCreators({ blur, change }, dispatch)
+                      ...bindActionCreators(
+                        { blur, change, changeMultiple },
+                        dispatch
+                      )
                     },
                     this.props.validExceptSubmit,
                     this.asyncValidate,
@@ -820,7 +832,10 @@ const createReduxForm = (structure: Structure<*, *>) => {
                     checkSubmit(submitOrEvent),
                     {
                       ...this.props,
-                      ...bindActionCreators({ blur, change }, dispatch)
+                      ...bindActionCreators(
+                        { blur, change, changeMultiple },
+                        dispatch
+                      )
                     },
                     this.props.validExceptSubmit,
                     this.asyncValidate,
@@ -859,6 +874,7 @@ const createReduxForm = (structure: Structure<*, *>) => {
             asyncValidating,
             blur,
             change,
+            changeMultiple,
             clearSubmit,
             destroy,
             destroyOnUnmount,
@@ -919,7 +935,7 @@ const createReduxForm = (structure: Structure<*, *>) => {
             anyTouched,
             asyncValidate: this.asyncValidate,
             asyncValidating,
-            ...bindActionCreators({ blur, change }, dispatch),
+            ...bindActionCreators({ blur, change, changeMultiple }, dispatch),
             clearSubmit,
             destroy,
             dirty,
@@ -1063,6 +1079,13 @@ const createReduxForm = (structure: Structure<*, *>) => {
               !!initialProps.touchOnChange,
               !!initialProps.persistentSubmitErrors
             )
+          const boundChangeMultiple = values =>
+            changeMultiple(
+              initialProps.form,
+              values,
+              !!initialProps.touchOnChange,
+              !!initialProps.persistentSubmitErrors
+            )
           const boundFocus = bindForm(focus)
 
           // Wrap action creators with `dispatch`
@@ -1088,6 +1111,7 @@ const createReduxForm = (structure: Structure<*, *>) => {
             ...boundArrayACs,
             blur: boundBlur,
             change: boundChange,
+            changeMultiple: boundChangeMultiple,
             array: connectedArrayACs,
             focus: boundFocus,
             dispatch

@@ -13,6 +13,7 @@ import {
   AUTOFILL,
   BLUR,
   CHANGE,
+  CHANGE_MULTIPLE,
   CLEAR_ASYNC_ERROR,
   CLEAR_SUBMIT,
   CLEAR_SUBMIT_ERRORS,
@@ -135,6 +136,25 @@ function createReducer<M, L>(structure: Structure<M, L>) {
       undefined
     )
     result = doSplice(result, 'asyncErrors', field, index, removeNum, undefined)
+    return result
+  }
+  const change = (state, field, values, touch, persistentSubmitErrors) => {
+    let result = state
+    const initial = getIn(result, `initial.${field}`)
+    if (initial === undefined && values === '') {
+      result = deleteInWithCleanUp(result, `values.${field}`)
+    } else if (values !== undefined) {
+      result = setIn(result, `values.${field}`, values)
+    }
+    result = deleteInWithCleanUp(result, `asyncErrors.${field}`)
+    if (!persistentSubmitErrors) {
+      result = deleteInWithCleanUp(result, `submitErrors.${field}`)
+    }
+    result = deleteInWithCleanUp(result, `fields.${field}.autofilled`)
+    if (touch) {
+      result = setIn(result, `fields.${field}.touched`, true)
+      result = setIn(result, 'anyTouched', true)
+    }
     return result
   }
 
@@ -300,23 +320,21 @@ function createReducer<M, L>(structure: Structure<M, L>) {
         payload
       }
     ) {
-      let result = state
-      const initial = getIn(result, `initial.${field}`)
-      if (initial === undefined && payload === '') {
-        result = deleteInWithCleanUp(result, `values.${field}`)
-      } else if (payload !== undefined) {
-        result = setIn(result, `values.${field}`, payload)
+      change(state, field, payload, touch, persistentSubmitErrors)
+    },
+    [CHANGE_MULTIPLE](
+      state,
+      {
+        meta: { touch, persistentSubmitErrors },
+        payload
       }
-      result = deleteInWithCleanUp(result, `asyncErrors.${field}`)
-      if (!persistentSubmitErrors) {
-        result = deleteInWithCleanUp(result, `submitErrors.${field}`)
-      }
-      result = deleteInWithCleanUp(result, `fields.${field}.autofilled`)
-      if (touch) {
-        result = setIn(result, `fields.${field}.touched`, true)
-        result = setIn(result, 'anyTouched', true)
-      }
-      return result
+    ) {
+      const mapData = fromJS(payload)
+
+      forEach(keys(mapData), name => {
+        const value = getIn(mapData, name)
+        change(state, name, value, touch, persistentSubmitErrors)
+      })
     },
     [CLEAR_SUBMIT](state) {
       return deleteIn(state, 'triggerSubmit')
